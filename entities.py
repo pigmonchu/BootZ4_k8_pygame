@@ -4,6 +4,23 @@ from random import choice, randint
 
 FPS = 60
 
+level1 = ['-X-XXX-X',
+          'XXXXXXXXX',
+          'XX-X'
+]
+
+
+
+class Map:
+    def __init__(self, strmap)
+        self.group = sprite.Group()
+
+        <Toda la lógica de la creación de los Tiles, su posición y agruparlos>
+
+        return self.group
+
+
+
 class Racket(pg.sprite.Sprite):
     pictures = 'racket_horizontal.png'
     speed = 10

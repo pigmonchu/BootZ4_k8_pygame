@@ -8,6 +8,13 @@ FPS = 60
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 
+level1 = ['-X-XXX-X',
+          'XXXXXXXXX',
+          'XX-X'
+]
+
+
+
 class Game:
     clock = pg.time.Clock()
     score = 0
@@ -38,10 +45,14 @@ class Game:
     def create_tiles(self):
         self.tileGroup.empty()
         self.allSprites.empty()
+
         for j in range(5):
             for i in range(16):
                 t = Tile(i*50, 60+j*32)
                 self.tileGroup.add(t)
+
+        self.tileGroup = Map(level1)
+
         self.allSprites.add(self.player)
         self.allSprites.add(self.ball)
         self.allSprites.add(self.tileGroup)

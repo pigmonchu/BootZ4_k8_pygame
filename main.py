@@ -8,11 +8,11 @@ FPS = 60
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 
-level1 = ['-X-XXX-X',
-          'XXXXXXXXX',
-          'XX-X'
-]
-
+level1 = ['',
+          '-XXXXXXXXXXXXXX-',
+          '-X------------X-',
+          '-X------------X-',
+          '-XXXXXXXXXXXXXX-']
 
 
 class Game:
@@ -34,7 +34,7 @@ class Game:
 
         self.player = Racket()
         self.ball = Ball()
-        self.tileGroup = pg.sprite.Group()
+        self.tileGroup = None
 
         self.playerGroup = pg.sprite.Group()
         self.allSprites = pg.sprite.Group()
@@ -42,26 +42,15 @@ class Game:
 
         self.start_partida()
 
-    def create_tiles(self):
-        self.tileGroup.empty()
-        self.allSprites.empty()
-
-        for j in range(5):
-            for i in range(16):
-                t = Tile(i*50, 60+j*32)
-                self.tileGroup.add(t)
-
-        self.tileGroup = Map(level1)
-
-        self.allSprites.add(self.player)
-        self.allSprites.add(self.ball)
-        self.allSprites.add(self.tileGroup)
-
 
     def start_partida(self):
         self.player.lives = 3
         self.ball.start()
-        self.create_tiles()
+        self.allSprites.empty()
+        self.allSprites.add(self.player)
+        self.allSprites.add(self.ball)
+        self.tileGroup = Map(level1, Tile).group
+        self.allSprites.add(self.tileGroup)
         self.score = 0
 
     def quitGame(self):
@@ -85,18 +74,19 @@ class Game:
 
             if event.type == KEYDOWN:
                 if event.key == K_LEFT:
-                    self.player.go_left()
+                    self.player.v.x = -10
                 
                 if event.key == K_RIGHT:
-                    self.player.go_right()
+                    self.player.v.x = 10
 
         keys_pressed = pg.key.get_pressed()
         if keys_pressed[K_LEFT]:
-            self.player.go_left()
+            self.player.v.x = -10
+        elif keys_pressed[K_RIGHT]:
+            self.player.v.x = 10
+        else:
+            self.player.v.x = 0
 
-        if keys_pressed[K_RIGHT]:
-            self.player.go_right()
-        
     def mainloop(self):
         while True:
             dt = self.clock.tick(FPS)
@@ -106,7 +96,6 @@ class Game:
             else: 
                 self.gameOver()
 
-
             pg.display.flip()
 
     def bucle_partida(self, dt):
@@ -115,7 +104,7 @@ class Game:
         self.ball.test_collisions(self.playerGroup)
         self.score += self.ball.test_collisions(self.tileGroup, True)
 
-        if self.ball.speed == 0: #se ha producido colision
+        if self.ball.speed.length() == 0: #se ha producido colision
             self.player.lives -= 1
             self.ball.start()
 

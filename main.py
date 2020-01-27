@@ -10,8 +10,8 @@ YELLOW = (255, 255, 0)
 
 level1 = ['',
           '-XXXXXXXXXXXXXX-',
-          '-XXXXXXXXXXXXXX-',
-          '-XXXXXXXXXXXXXX-',
+          '-X------------X-',
+          '-X------------ X-',
           '-XXXXXXXXXXXXXX-']
 
 
@@ -78,18 +78,19 @@ class Game:
 
             if event.type == KEYDOWN:
                 if event.key == K_LEFT:
-                    self.player.go_left()
+                    self.player.v.x = -10
                 
                 if event.key == K_RIGHT:
-                    self.player.go_right()
+                    self.player.v.x = 10
 
         keys_pressed = pg.key.get_pressed()
         if keys_pressed[K_LEFT]:
-            self.player.go_left()
+            self.player.v.x = -10
+        elif keys_pressed[K_RIGHT]:
+            self.player.v.x = 10
+        else:
+            self.player.v.x = 0
 
-        if keys_pressed[K_RIGHT]:
-            self.player.go_right()
-        
     def mainloop(self):
         while True:
             dt = self.clock.tick(FPS)
@@ -99,7 +100,6 @@ class Game:
             else: 
                 self.gameOver()
 
-
             pg.display.flip()
 
     def bucle_partida(self, dt):
@@ -108,7 +108,7 @@ class Game:
         self.ball.test_collisions(self.playerGroup)
         self.score += self.ball.test_collisions(self.tileGroup, True)
 
-        if self.ball.speed == 0: #se ha producido colision
+        if self.ball.speed.length() == 0: #se ha producido colision
             self.player.lives -= 1
             self.ball.start()
 

@@ -4,6 +4,28 @@ from random import choice, randint
 
 FPS = 60
 
+class Map:
+    def __init__(self, strmap, Frame, x=0, y=0):
+
+        self.group = pg.sprite.Group()
+
+        if not isinstance(strmap, list):
+            raise ValueError('Mapa ha de ser lista de cadenas')
+        for pf, fila in enumerate(strmap):
+            if not isinstance(fila, str):
+                raise ValueError('Cada fila ha de ser una cadena')
+
+        w = Frame.w
+        h = Frame.h
+
+        for pf, fila in enumerate(strmap):
+            for pc, t in enumerate(fila):
+                if t == 'X':
+                    f = Frame(x + pc * w, y + pf * h)
+                    self.group.add(f)
+
+
+
 class Racket(pg.sprite.Sprite):
     pictures = 'racket_horizontal.png'
     speed = 10

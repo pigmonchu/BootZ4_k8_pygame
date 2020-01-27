@@ -8,6 +8,13 @@ FPS = 60
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 
+level1 = ['',
+          '-XXXXXXXXXXXXXX-',
+          '-XXXXXXXXXXXXXX-',
+          '-XXXXXXXXXXXXXX-',
+          '-XXXXXXXXXXXXXX-']
+
+
 class Game:
     clock = pg.time.Clock()
     score = 0
@@ -27,7 +34,7 @@ class Game:
 
         self.player = Racket()
         self.ball = Ball()
-        self.tileGroup = pg.sprite.Group()
+        self.tileGroup = None
 
         self.playerGroup = pg.sprite.Group()
         self.allSprites = pg.sprite.Group()
@@ -37,20 +44,17 @@ class Game:
 
     def create_tiles(self):
         self.tileGroup.empty()
-        self.allSprites.empty()
-        for j in range(5):
-            for i in range(16):
-                t = Tile(i*50, 60+j*32)
-                self.tileGroup.add(t)
-        self.allSprites.add(self.player)
-        self.allSprites.add(self.ball)
         self.allSprites.add(self.tileGroup)
 
 
     def start_partida(self):
         self.player.lives = 3
         self.ball.start()
-        self.create_tiles()
+        self.allSprites.empty()
+        self.allSprites.add(self.player)
+        self.allSprites.add(self.ball)
+        self.tileGroup = Map(level1, Tile).group
+        self.allSprites.add(self.tileGroup)
         self.score = 0
 
     def quitGame(self):

@@ -11,7 +11,7 @@ YELLOW = (255, 255, 0)
 level1 = ['',
           '-XXXXXXXXXXXXXX-',
           '-X------------X-',
-          '-X------------ X-',
+          '-X------------X-',
           '-XXXXXXXXXXXXXX-']
 
 
